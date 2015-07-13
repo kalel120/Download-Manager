@@ -46,6 +46,31 @@ public class DownloadManager extends JFrame implements Observer{
         } );
 
         //Set up file menu
-        
+        JMenuBar  menuBar = new JMenuBar();
+        JMenu fileMenu = new JMenu("File");
+        fileMenu.setMnemonic(KeyEvent.VK_F);
+        JMenuItem fileExitMenuItem = new JMenuItem("Exit", KeyEvent.VK_X);
+        fileExitMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                actionExit();
+            }
+        });
+        fileMenu.add(fileExitMenuItem);
+        menuBar.add(fileMenu);
+        setJMenuBar(menuBar);
+
+       //Set up add panel
+        JPanel addPanel = new JPanel();
+        addTextField = new JTextField(30);
+        addPanel.add(addTextField);
+        JButton addButton = new JButton ("Add Download");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent et) {
+                actionAdd();
+            }
+        });
+        addPanel.add(addButton);
     }
 }
