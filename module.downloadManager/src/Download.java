@@ -3,14 +3,13 @@
  * Created by Al on 06-Jul-15.
  */
 import sun.net.www.protocol.http.*;
-
 import java.io.*;
 import java.net.*;
 import java.net.HttpURLConnection;
 import java.util.*;
 
-//this class downlaods a file from a URL
-public class Download extends {
+//this class Downloads a file from a URL
+public class Download extends Observable implements Runnable{
     //Max size of download buffer
     private static final int MAX_BUFFER_SIZE = 1024;
 
@@ -109,7 +108,7 @@ public class Download extends {
             //Open Connection to URL
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
-            //Specifiy what portion of files to download
+            //Specify what portion of files to download
             connection.setRequestProperty("Range ", "bytes = " + downloaded + "-");
 
             //connect to server
@@ -129,7 +128,7 @@ public class Download extends {
             /* Set the size for this download if it is not haven't been already set*/
             if (size == -1) {
                 size = contentLength;
-                stateChnaged();
+                stateChanged();
             }
 
             //Open file and seek to the end of it
@@ -185,6 +184,6 @@ public class Download extends {
     }
     private void stateChanged() {
         setChanged();
-        notifObservers();
+        notifyObservers();
     }
 }
