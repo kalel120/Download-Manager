@@ -72,5 +72,32 @@ public class DownloadManager extends JFrame implements Observer{
             }
         });
         addPanel.add(addButton);
+
+        //set up Download Table
+        tableModel = new DownloadsTableModel();
+        table = new JTable(tableModel);
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                tableSelectionChanged();
+            }
+        });
+
+        //Allow only one row at a time to be selected.
+        table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+
+        //set up ProgressBar as renderer for progress colum
+        ProgressRenderer renderer = new ProgressRenderer(0,100);
+        renderer.setStringPainted(true);                        //show progress text
+        table.setDefaultRenderer(JProgressBar.class , renderer);
+
+        //set table's row height large enough to fit JProgressBar.
+        table.setRowHeight( (int)renderer.getPreferredSize().getHeight());
+
+        //set up download panel
+        JPanel downloadsPanel = new JPanel();
+        downloadsPanel.setBorder(BorderFactory.createTitledBorder("Downloads"));
+        downloadsPanel.setLayout(new BorderLayout());
+        downloadsPanel.add(new JScrollPane(table), BorderLayout.CENTER );
     }
 }
