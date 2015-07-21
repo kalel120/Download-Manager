@@ -2,7 +2,6 @@
  * provided by Herbert Schildt Complete reference of java v7.0
  * Created by Al on 06-Jul-15.
  */
-import sun.net.www.protocol.http.*;
 import java.io.*;
 import java.net.*;
 import java.net.HttpURLConnection;

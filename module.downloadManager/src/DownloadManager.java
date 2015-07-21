@@ -1,5 +1,5 @@
 /**
- * This class is reponsible for creating and running the download manager's GUI.
+ * This class is responsible for creating and running the download manager's GUI.
  * This class has a main method declared, so on creation it will invoked first
  *
  * Created by Al on 13-Jul-15.
@@ -225,5 +225,66 @@ public class DownloadManager extends JFrame implements Observer{
         updateButtons();
     }
 
-    
+    /**
+     * Update each button's state based off the currently selected download's status
+     */
+    private void updateButtons(){
+        if(selectedDownload !=null){
+            int status = selectedDownload.getStatus();
+            switch (status){
+                case Download.DOWNLOADING:
+                    pauseButton.setEnabled(true);
+                    resumeButton.setEnabled(false);
+                    cancelButton.setEnabled(true);
+                    clearButton.setEnabled(false);
+                    break;
+                case Download.PAUSED:
+                    pauseButton.setEnabled(false);
+                    resumeButton.setEnabled(true);
+                    cancelButton.setEnabled(true);
+                    clearButton.setEnabled(false);
+                    break;
+                case Download.ERROR:
+                    pauseButton.setEnabled(false);
+                    resumeButton.setEnabled(true);
+                    cancelButton.setEnabled(false);
+                    clearButton.setEnabled(true);
+                    break;
+                default:                        //Complete or cancel
+                    pauseButton.setEnabled(false);
+                    resumeButton.setEnabled(false);
+                    cancelButton.setEnabled(false);
+                    clearButton.setEnabled(true);
+            }
+        }
+        else{
+            //No download is selected in this table
+            pauseButton.setEnabled(false);
+            resumeButton.setEnabled(false);
+            cancelButton.setEnabled(false);
+            clearButton.setEnabled(false);
+        }
+    }
+
+    /**
+     * Update is called when a Download notifies its observes of any changes
+     */
+    public void update(Observable obs, Object arg){
+        //Update buttons if update if the selected download has changed.
+        if(selectedDownload !=null && selectedDownload.equals(obs)){
+            updateButtons();
+        }
+    }
+
+    /**
+     * Main method
+     */
+    public static void main(String []  args){
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run(){
+                DownloadManager objManager = new DownloadManager();
+                objManager.setVisible(true);
+            }
+        });
+    }
 }
