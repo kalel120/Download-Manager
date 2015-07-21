@@ -183,4 +183,47 @@ public class DownloadManager extends JFrame implements Observer{
         }
         return verifiedUrl;
     }
+
+    //Called when table row selection changed
+    private void tableSelectionChanged(){
+        //Unregistered from receiving notifications from the last selected download
+        if(selectedDownload != null){
+            selectedDownload.deleteObserver(DownloadManager.this);
+        }
+        //if not in the middle of clearing a download, set the selected download and register to receive notification from it
+        if(!clearing && table.getSelectedRow() > - 1){
+            selectedDownload = tableModel.getDownload(table.getSelectedRow());
+            selectedDownload.addObserver(DownloadManager.this);
+            updateButtons();
+        }
+    }
+
+    //Pause the selected download
+    private void actionPause(){
+        selectedDownload.pause();
+        updateButtons();
+    }
+
+    //Resume the selected Donload
+    private void actionResume(){
+        selectedDownload.resume();
+        updateButtons();
+    }
+
+    //Cancel the selected download
+    private void actionCancel(){
+        selectedDownload.cancel();
+        updateButtons();
+    }
+
+    //clear the selected download
+    private void actionClear(){
+        clearing = true;
+        tableModel.clearDownload(table.getSelectedRow());
+        clearing = false;
+        selectedDownload = null;
+        updateButtons();
+    }
+
+    
 }
